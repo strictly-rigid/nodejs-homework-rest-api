@@ -40,9 +40,17 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const fieldSubscriptionSchema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business").messages({
+    "any.only":
+      "field subscription  must be one of 'starter', 'pro', 'business'",
+  }),
+});
+
 const schemas = {
   registerSchema,
   loginSchema,
+  fieldSubscriptionSchema,
 };
 
 const User = model("user", userSchema);

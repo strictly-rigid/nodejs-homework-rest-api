@@ -19,6 +19,7 @@ const register = async (req, res) => {
 
   const newUser = await User.create({ ...req.body, password: hashPassword });
 
+  console.log(newUser);
   res.status(201).json({
     email: newUser.email,
     password: newUser.password,
@@ -49,11 +50,11 @@ const login = async (req, res) => {
 };
 
 const getCurrent = async (req, res) => {
-  const { email, name } = req.user;
+  const { email, subscription } = req.user;
 
   res.json({
     email,
-    name,
+    subscription,
   });
 };
 
@@ -66,9 +67,25 @@ const logout = async (req, res) => {
   });
 };
 
+const updateFieldSubscription = async (req, res) => {
+  const { subscription } = req.body;
+  const { _id } = req.user;
+  const user = await User.findById(_id);
+  if (!user) {
+    throw HttpError(401);
+  }
+
+  const updateUser = await User.findByIdAndUpdate(_id, { subscription });
+  if (updateUser) {
+    const user = await User.findById(_id);
+    res.json(user);
+  }
+};
+
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
+  updateFieldSubscription: ctrlWrapper(updateFieldSubscription),
 };

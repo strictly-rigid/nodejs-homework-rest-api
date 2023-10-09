@@ -3,13 +3,14 @@ const gravatar = require("gravatar");
 
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-// const { META_PASSWORD } = process.env;
+const { META_PASSWORD } = process.env;
 const nodemailerConfig = {
-  host: "smtp.ethereal.email",
-  port: 587,
+  host: "smtp.meta.ua",
+  port: 465,
+  secure: true,
   auth: {
-    user: "henri33@ethereal.email",
-    pass: "rMuMKpPcRabC7cTEDb",
+    user: "emailer-project@meta.ua",
+    pass: META_PASSWORD,
   },
 };
 const transport = nodemailer.createTransport(nodemailerConfig);
@@ -43,7 +44,7 @@ const register = async (req, res) => {
 
   const verifyEmail = {
     to: email,
-    from: "henri33@ethereal.email",
+    // from: "henri33@ethereal.email",
     subject: "Verify email",
     html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click verify email</a>`,
   };

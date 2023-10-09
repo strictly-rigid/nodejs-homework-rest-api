@@ -52,6 +52,7 @@ const register = async (req, res) => {
     .catch((error) => console.log(error.message));
 
   console.log(newUser);
+  console.log("Email has been successfully sent!");
 
   res.status(201).json({
     email: newUser.email,

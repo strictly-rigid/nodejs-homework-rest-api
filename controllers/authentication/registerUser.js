@@ -3,24 +3,21 @@ const gravatar = require("gravatar");
 
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-const { META_PASSWORD } = process.env;
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+const { META_PASSWORD, BASE_URL } = process.env;
+// process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 const nodemailerConfig = {
   host: "smtp.meta.ua",
   port: 465,
   secure: true,
   auth: {
-    user: "emailer-project@meta.ua",
+    user: "testproject3",
     pass: META_PASSWORD,
   },
 };
-const transport = nodemailer.createTransport(nodemailerConfig);
 
 const { User } = require("../../models/user");
 const { HttpError } = require("../../helpers");
 const { nanoid } = require("nanoid");
-
-const { BASE_URL } = process.env;
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -43,10 +40,11 @@ const register = async (req, res) => {
 
   const verifyEmail = {
     to: email,
-    from: "emailer-project@meta.ua",
+    from: "testproject3",
     subject: "Verify email",
     html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click verify email</a>`,
   };
+  const transport = nodemailer.createTransport(nodemailerConfig);
 
   await transport
     .sendMail(verifyEmail)
